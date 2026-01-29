@@ -37,7 +37,14 @@ export const toggleLikeCreation = async (req, res)=>{
             return res.json({ success: false, message: "Creation not found" })
         }
 
-        const currentLikes = creation.likes;
+const currentLikes = creation.likes
+  ? creation.likes
+      .replace(/^{|}$/g, '')  // remove { and }
+      .split(',')
+      .filter(Boolean)         // remove empty strings
+  : [];
+
+        console.log("Current likes:",currentLikes)
         const userIdStr = userId.toString();
         let updatedLikes;
         let message;
